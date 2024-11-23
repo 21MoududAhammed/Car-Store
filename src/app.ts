@@ -1,4 +1,14 @@
-console.log('hello Bangladesh');
-const num = 10;
-const data = 100;
-console.log(num, data);
+import express, { Request, Response } from 'express';
+import cors from 'cors';
+
+const app = express();
+
+// middlewares
+app.use(express.json());
+app.use(cors());
+
+app.get('/', (req: Request, res: Response) => {
+  res.send('Hello world!');
+});
+
+export default app;
