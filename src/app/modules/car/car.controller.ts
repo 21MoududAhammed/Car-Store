@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Request, Response } from 'express';
 import { carServices } from './car.service';
 import { carZodSchema } from './car.validation';
@@ -6,16 +7,17 @@ import mongoose from 'mongoose';
 import { TCar } from './car.interface';
 
 // create a car
-const createSingleCar = async (req: Request, res: Response) => {
+ 
+const createSingleCar = async (req: Request, res: Response): Promise<any> => {
   try {
     const carData: TCar = carZodSchema.parse(req.body);
     const result = await carServices.createSingleCarService(carData);
-    res.status(200).json({
+    return res.status(200).json({
       success: true,
       message: 'Created Successfully!',
       data: result,
     });
-  } catch (err) {
+  } catch (err : unknown) {
     if (err instanceof ZodError) {
       // handle validation errors
       return res.status(400).json({
@@ -25,7 +27,7 @@ const createSingleCar = async (req: Request, res: Response) => {
       });
     }
     // handle other errors
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       message: 'An unexpected error occurred.',
       errors: err,
@@ -34,7 +36,7 @@ const createSingleCar = async (req: Request, res: Response) => {
 };
 
 //to get all cars from db
-const getAllCars = async (req: Request, res: Response) => {
+const getAllCars = async (req: Request, res: Response): Promise<any> => {
   try {
     const result = await carServices.getAllCarsService();
     res.status(200).json({
@@ -52,7 +54,7 @@ const getAllCars = async (req: Request, res: Response) => {
 };
 
 // to get a car from db
-const getSingleCar = async (req: Request, res: Response) => {
+const getSingleCar = async (req: Request, res: Response): Promise<any>=> {
   try {
     const { carId } = req.params;
     // validate if the provided id is a valid ObjectId
@@ -87,7 +89,7 @@ const getSingleCar = async (req: Request, res: Response) => {
 };
 
 // to update single car by id
-const updateSingleCar = async (req: Request, res: Response) => {
+const updateSingleCar = async (req: Request, res: Response): Promise<any> => {
   try {
     const { carId } = req.params;
     const updatedCarData: Partial<TCar> = req.body;
@@ -136,7 +138,7 @@ const updateSingleCar = async (req: Request, res: Response) => {
 };
 
 // to delete single car service
-const deleteSingleCar = async (req: Request, res: Response) => {
+const deleteSingleCar = async (req: Request, res: Response): Promise<any> => {
   try {
     const { carId } = req.params;
     // check if the id is valid object id

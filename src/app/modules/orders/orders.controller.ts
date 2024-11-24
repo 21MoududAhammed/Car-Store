@@ -1,9 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Request, Response } from 'express';
 import { ordersZodValidationSchema } from './orders.validation';
 import { ordersServices } from './orders.service';
 import { ZodError } from 'zod';
 // to create a order
-const createOrder = async (req: Request, res: Response) => {
+const createOrder = async (req: Request, res: Response): Promise<any> => {
   try {
     const orderData = ordersZodValidationSchema.parse(req.body);
     const result = await ordersServices.createOrdersService(orderData);
