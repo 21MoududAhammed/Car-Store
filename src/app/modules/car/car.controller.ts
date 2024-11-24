@@ -4,10 +4,11 @@ import { carZodSchema } from './car.validation';
 import { ZodError } from 'zod';
 import mongoose from 'mongoose';
 import { TCar } from './car.interface';
+
 // create a car
 const createSingleCar = async (req: Request, res: Response) => {
   try {
-    const carData = carZodSchema.parse(req.body);
+    const carData: TCar = carZodSchema.parse(req.body);
     const result = await carServices.createSingleCarService(carData);
     res.status(200).json({
       success: true,
@@ -20,7 +21,7 @@ const createSingleCar = async (req: Request, res: Response) => {
       return res.status(400).json({
         success: false,
         message: 'Validation Failed',
-        errors: err,
+        errors: err.issues,
       });
     }
     // handle other errors
